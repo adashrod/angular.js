@@ -53,13 +53,15 @@ function prepareAnimateOptions(options) {
       : {};
 }
 
-var $$CoreAnimateJsProvider = /** @this */ function() {
+/** @this */
+function $$CoreAnimateJsProvider() {
   this.$get = noop;
-};
+}
 
 // this is prefixed with Core since it conflicts with
 // the animateQueueProvider defined in ngAnimate/animateQueue.js
-var $$CoreAnimateQueueProvider = /** @this */ function() {
+/** @this */
+function $$CoreAnimateQueueProvider() {
   var postDigestQueue = new NgMap();
   var postDigestElements = [];
 
@@ -163,12 +165,12 @@ var $$CoreAnimateQueueProvider = /** @this */ function() {
       }
     }
   }];
-};
+}
 
 /**
  * @ngdoc provider
  * @name $animateProvider
- *
+ * @this
  * @description
  * Default implementation of $animate that doesn't perform any animations, instead just
  * synchronously performs DOM updates and resolves the returned runner promise.
@@ -177,7 +179,7 @@ var $$CoreAnimateQueueProvider = /** @this */ function() {
  *
  * To see the functional implementation check out `src/ngAnimate/animate.js`.
  */
-var $AnimateProvider = ['$provide', /** @this */ function($provide) {
+function AnimateProvider($provide) {
   var provider = this;
   var classNameFilter = null;
 
@@ -655,4 +657,5 @@ var $AnimateProvider = ['$provide', /** @this */ function($provide) {
       }
     };
   }];
-}];
+}
+var $AnimateProvider = ['$provide', AnimateProvider];

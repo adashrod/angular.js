@@ -92,9 +92,10 @@ NgMapShim.prototype = {
 // are still buggy (often in subtle ways) and can cause hard-to-debug failures. When native `Map`
 // implementations get more stable, we can reconsider switching to `window.Map` (when available).
 var NgMap = NgMapShim;
-
-var $$MapProvider = [/** @this */function() {
+/** @this */
+function MP() {
   this.$get = [function() {
     return NgMap;
   }];
-}];
+}
+var $$MapProvider = [MP];

@@ -14,7 +14,7 @@
  *
  * Click here {@link ngAnimate.$animateCss to read the documentation for $animateCss}.
  */
-var $CoreAnimateCssProvider = function() {
+function $CoreAnimateCssProvider() {
   this.$get = ['$$rAF', '$q', '$$AnimateRunner', function($$rAF, $q, $$AnimateRunner) {
 
     return function(element, initialOptions) {
@@ -72,4 +72,4 @@ var $CoreAnimateCssProvider = function() {
       }
     };
   }];
-};
+}

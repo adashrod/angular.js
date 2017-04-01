@@ -1,6 +1,7 @@
 'use strict';
 
-var $$AnimateAsyncRunFactoryProvider = /** @this */ function() {
+/** @this */
+function $$AnimateAsyncRunFactoryProvider() {
   this.$get = ['$$rAF', function($$rAF) {
     var waitQueue = [];
 
@@ -29,9 +30,10 @@ var $$AnimateAsyncRunFactoryProvider = /** @this */ function() {
       };
     };
   }];
-};
+}
 
-var $$AnimateRunnerFactoryProvider = /** @this */ function() {
+/** @this */
+function $$AnimateRunnerFactoryProvider() {
   this.$get = ['$q', '$sniffer', '$$animateAsyncRun', '$$isDocumentHidden', '$timeout',
        function($q,   $sniffer,   $$animateAsyncRun,   $$isDocumentHidden,   $timeout) {
 
@@ -186,4 +188,4 @@ var $$AnimateRunnerFactoryProvider = /** @this */ function() {
 
     return AnimateRunner;
   }];
-};
+}

@@ -4,12 +4,13 @@
  * @ngdoc service
  * @name $jsonpCallbacks
  * @requires $window
+ * @this
  * @description
  * This service handles the lifecycle of callbacks to handle JSONP requests.
  * Override this service if you wish to customise where the callbacks are stored and
  * how they vary compared to the requested url.
  */
-var $jsonpCallbacksProvider = /** @this */ function() {
+function $jsonpCallbacksProvider() {
   this.$get = function() {
     var callbacks = angular.callbacks;
     var callbackMap = {};
@@ -79,4 +80,4 @@ var $jsonpCallbacksProvider = /** @this */ function() {
       }
     };
   };
-};
+}

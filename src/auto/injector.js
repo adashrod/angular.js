@@ -883,6 +883,29 @@ function createInjector(modulesToLoad, strictDi) {
       return result;
     }
 
+    /**
+     * Monkey patch for browsers that don't support Function.prototype.bind, this constructs an eval
+     * statement to get the same effect of: calling new on a class while passing an array of args to
+     * it using Function.prototype.apply
+     * @param {Function}  klass a constructor function, must be named, ie must have been defined
+     *                          like "function MyClass() {...", not "var MyClass = function() {..."
+     * @param {Array.<*>} args  args to pass to the constructor
+     */
+    function newWithApplyUsingEval(klass, args) {
+      if (!klass.name) {
+        throw $injectorMinErr("anon",
+            "Constructor must be named function when function.bind isn't available: {0}",
+            klass.toString().substring(0, 100) + (klass.length < 100 ? "..." : ""));
+      }
+      var stmt = "new " + klass.name + "(";
+      var argsNames = [];
+      for (var i = 0; i < args.length; i++) {
+        argsNames.push("args[" + i + "]");
+      }
+      stmt += argsNames.join(", ") + ");";
+      return eval(stmt);
+    }
+
     function invoke(fn, self, locals, serviceName) {
       if (typeof locals === 'string') {
         serviceName = locals;
@@ -899,8 +922,12 @@ function createInjector(modulesToLoad, strictDi) {
         // #5388
         return fn.apply(self, args);
       } else {
-        args.unshift(null);
-        return new (Function.prototype.bind.apply(fn, args))();
+        if (typeof Function.prototype.bind === "function") {
+          args.unshift(null);
+          return new (Function.prototype.bind.apply(fn, args))();
+        } else {
+          return newWithApplyUsingEval(fn, args);
+        }
       }
     }
 
@@ -910,9 +937,13 @@ function createInjector(modulesToLoad, strictDi) {
       // e.g. someModule.factory('greeter', ['$window', function(renamed$window) {}]);
       var ctor = (isArray(Type) ? Type[Type.length - 1] : Type);
       var args = injectionArgs(Type, locals, serviceName);
-      // Empty object at position 0 is ignored for invocation with `new`, but required.
-      args.unshift(null);
-      return new (Function.prototype.bind.apply(ctor, args))();
+      if (typeof Function.prototype.bind === "function") {
+        // Empty object at position 0 is ignored for invocation with `new`, but required.
+        args.unshift(null);
+        return new (Function.prototype.bind.apply(ctor, args))();
+      } else {
+        return newWithApplyUsingEval(ctor, args);
+      }
     }
 
 

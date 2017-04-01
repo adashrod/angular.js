@@ -1,6 +1,7 @@
 'use strict';
 
-var $$ForceReflowProvider = /** @this */ function() {
+/** @this */
+function $$ForceReflowProvider() {
   this.$get = ['$document', function($document) {
     return function(domNode) {
       //the line below will force the browser to perform a repaint so
@@ -21,4 +22,4 @@ var $$ForceReflowProvider = /** @this */ function() {
       return domNode.offsetWidth + 1;
     };
   }];
-};
+}
