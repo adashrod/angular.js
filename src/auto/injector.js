@@ -893,9 +893,10 @@ function createInjector(modulesToLoad, strictDi) {
      */
     function newWithApplyUsingEval(klass, args) {
       if (!klass.name) {
+        var funStr = klass.toString();
         throw $injectorMinErr("anon",
             "Constructor must be named function when function.bind isn't available: {0}",
-            klass.toString().substring(0, 100) + (klass.length < 100 ? "..." : ""));
+            funStr.substring(0, 100) + (funStr.length > 100 ? "..." : ""));
       }
       var stmt = "new " + klass.name + "(";
       var argsNames = [];
